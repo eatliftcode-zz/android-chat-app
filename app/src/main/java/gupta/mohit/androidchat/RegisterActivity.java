@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
         mDisplayName = (TextInputEditText)findViewById(R.id.reg_display_name);
         mEmail = (TextInputEditText)findViewById(R.id.login_email);
         mPassword = (TextInputEditText)findViewById(R.id.login_password);
-        mCreateBtn = (Button)findViewById(R.id.reg_create_button);
+        mCreateBtn = (Button)findViewById(R.id.login_btn);
 
         mCreateBtn.setOnClickListener(new View.OnClickListener(){
 
