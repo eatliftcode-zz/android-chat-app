@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".StartActivity">
 
     <TextView
@@ -12,11 +13,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="91dp"
-        android:layout_marginTop="337dp"
-        android:text="Welcome to the app"
-        android:textSize="24sp" />
+        android:layout_centerInParent="true"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="361dp"
+        android:fontFamily="@font/alegreya_sans_sc"
+        android:text="Welcome to Kraken Chat"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/start_reg_btn"
@@ -24,6 +27,23 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="436dp"
-        android:text="@string/need_a_new_account" />
+        android:layout_marginTop="532dp"
+        android:background="@android:color/black"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/need_a_new_account"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/start_log_in_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:background="@color/colorAccent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Already Have Account?"
+        android:textColor="@android:color/white" />
 </RelativeLayout>
