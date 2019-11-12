@@ -76,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
                 String status = dataSnapshot.child("status").getValue().toString();
                 String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
-                mName.setText(image);
+                mName.setText(name);
                 mStatus.setText(status);
                 Picasso.get().load(image).into(mDisplayImage);
 
