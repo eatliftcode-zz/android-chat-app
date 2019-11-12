@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -74,8 +76,9 @@ public class SettingsActivity extends AppCompatActivity {
                 String status = dataSnapshot.child("status").getValue().toString();
                 String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
-                mName.setText(name);
+                mName.setText(image);
                 mStatus.setText(status);
+                Picasso.get().load(image).into(mDisplayImage);
 
             }
 
@@ -128,12 +131,32 @@ public class SettingsActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                StorageReference filepath = mImageStorage.child("profile_images").child(random() + ".jpg");
+                String current_user_id = mCurrentUser.getUid();
+                final String  image_name = current_user_id + ".jpg";
+
+                StorageReference filepath = mImageStorage.child("profile_images").child(image_name);
                 filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(SettingsActivity.this, "Working", Toast.LENGTH_LONG).show();
+
+
+                            mImageStorage.child("profile_images").child(image_name).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String download_url = uri.toString();
+                                    mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Toast.makeText(SettingsActivity.this, "Working", Toast.LENGTH_LONG).show();
+
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+
                         }
                         else {
                             Toast.makeText(SettingsActivity.this, "Error in uploading", Toast.LENGTH_LONG).show();
@@ -148,16 +171,5 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    public static String random() {
-        Random generator = new Random();
-        StringBuilder randomStringBuilder = new StringBuilder();
-        int randomLength = generator.nextInt(20);
-        char tempChar;
-        for (int i = 0; i < randomLength; i++){
-            tempChar = (char) (generator.nextInt(96) + 32);
-            randomStringBuilder.append(tempChar);
-        }
-        return randomStringBuilder.toString();
-    }
 
 }
